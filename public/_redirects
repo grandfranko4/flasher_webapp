@@ -1,0 +1,8 @@
+# Redirects for React Router SPA
+/*    /index.html   200
+
+# API redirects (if needed)
+/api/*  https://gtjeaazmelddcjwpsxvp.supabase.co/rest/v1/:splat  200
+
+# Security redirects
+/admin/*  /  404!
