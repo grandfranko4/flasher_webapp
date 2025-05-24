@@ -11,6 +11,7 @@ import Login from './components/Login';
 import Dashboard from './pages/Dashboard';
 import LicenseKeys from './pages/LicenseKeys';
 import AppSettings from './pages/AppSettings';
+import EnvTest from './components/EnvTest';
 
 // Create Material-UI theme
 const theme = createTheme({
@@ -65,6 +66,16 @@ const theme = createTheme({
 });
 
 function App() {
+  // Temporary debug component for environment variables
+  if (process.env.NODE_ENV === 'production') {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <EnvTest />
+      </ThemeProvider>
+    );
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
