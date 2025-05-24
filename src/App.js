@@ -11,7 +11,7 @@ import Login from './components/Login';
 import Dashboard from './pages/Dashboard';
 import LicenseKeys from './pages/LicenseKeys';
 import AppSettings from './pages/AppSettings';
-import EnvTest from './components/EnvTest';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Create Material-UI theme
 const theme = createTheme({
@@ -66,80 +66,72 @@ const theme = createTheme({
 });
 
 function App() {
-  // Temporary debug component for environment variables
-  if (process.env.NODE_ENV === 'production') {
-    return (
+  return (
+    <ErrorBoundary>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <EnvTest />
+        <AuthProvider>
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <Dashboard />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/license-keys"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <LicenseKeys />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/app-settings"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <AppSettings />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            </Routes>
+          </Router>
+          
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+                borderRadius: '8px',
+              },
+              success: {
+                style: {
+                  background: '#10b981',
+                },
+              },
+              error: {
+                style: {
+                  background: '#ef4444',
+                },
+              },
+            }}
+          />
+        </AuthProvider>
       </ThemeProvider>
-    );
-  }
-
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <Dashboard />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/license-keys"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <LicenseKeys />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/app-settings"
-              element={
-                <ProtectedRoute>
-                  <Layout>
-                    <AppSettings />
-                  </Layout>
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
-        </Router>
-        
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#363636',
-              color: '#fff',
-              borderRadius: '8px',
-            },
-            success: {
-              style: {
-                background: '#10b981',
-              },
-            },
-            error: {
-              style: {
-                background: '#ef4444',
-              },
-            },
-          }}
-        />
-      </AuthProvider>
-    </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
