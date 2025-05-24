@@ -4,9 +4,6 @@
   
   # Directory that contains the built app
   publish = "build"
-  
-  # Set Node.js version
-  environment = { NODE_VERSION = "18" }
 
 # SPA redirect for React Router
 [[redirects]]
@@ -31,6 +28,7 @@
 
 # Environment variables (these need to be set in Netlify dashboard)
 [build.environment]
+  NODE_VERSION = "18"
   CI = "false"
   GENERATE_SOURCEMAP = "false"
   REACT_APP_SUPABASE_URL = "${REACT_APP_SUPABASE_URL}"
